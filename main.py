@@ -1,0 +1,23 @@
+import threading
+
+from src.config.logger import logger
+from src.helpers.thread_job import ThreadJob
+from src.services.trello_crawler import TrelloCrawler
+
+
+def updated_cards():
+    logger.info("Initializing updated cards")
+    trello_crawler = TrelloCrawler()
+    trello_crawler.integrate_cards()
+
+
+def main():
+    logger.info("Initialize Zac")
+
+    event = threading.Event()
+    routine = ThreadJob(updated_cards, event, 60)
+    routine.start()
+
+
+if __name__ == '__main__':
+    main()
