@@ -71,6 +71,18 @@ class Config:
         logger.info("Get db's database with success")
         return db_database
 
+    def get_zac_host(self):
+        logger.info("Getting zac's host from enviroment")
+        zac_host = self.get_variable_by_environment("ZAC_HOST")
+        logger.info("Get zac's host with success")
+        return zac_host
+
+    def get_zac_port(self):
+        logger.info("Getting zac's port from enviroment")
+        zac_port = self.get_variable_by_environment("ZAC_PORT")
+        logger.info("Get zac's port with success")
+        return int(zac_port)
+
     @staticmethod
     def get_variable_by_environment(variable_name):
         variable_value = os.getenv(variable_name)

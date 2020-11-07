@@ -12,3 +12,12 @@ class TrelloCard:
 
         trello_card["created_date"] = self._date_helper.today()
         self._dao.save(trello_card)
+
+    def get(self, filters):
+        logger.info("Initializing get cards")
+        cards = self._dao.get(filters)
+        return cards
+
+    def delete(self, filters):
+        logger.info("Initializing delete cards")
+        self._dao.delete(filters)
