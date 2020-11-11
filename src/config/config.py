@@ -83,6 +83,24 @@ class Config:
         logger.info("Get zac's port with success")
         return int(zac_port)
 
+    def get_salt(self):
+        logger.info("Getting zac's salt from enviroment")
+        zac_salt = self.get_variable_by_environment("ZAC_SALT")
+        logger.info("Get zac's salt with success")
+        return zac_salt
+
+    def get_jwt_secret(self):
+        logger.info("Getting jwt's secret from enviroment")
+        jwt_secret = self.get_variable_by_environment("JWT_SECRET")
+        logger.info("Get jwt's secret with success")
+        return jwt_secret
+
+    def get_jwt_algorithm(self):
+        logger.info("Getting jwt's algorithm from enviroment")
+        jwt_algorithm = self.get_variable_by_environment("JWT_ALGORITHM")
+        logger.info("Get jwt's algorithm with success")
+        return jwt_algorithm
+
     @staticmethod
     def get_variable_by_environment(variable_name):
         variable_value = os.getenv(variable_name)

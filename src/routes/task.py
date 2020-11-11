@@ -1,8 +1,8 @@
-from flask import request, jsonify
-import json
+from flask import request
 
 from src.api import zac
 from src.factories.factory_controller import FactoryController
+from src.helpers.access_helper import required_token
 
 factory = FactoryController()
 
@@ -13,6 +13,7 @@ def health():
 
 
 @zac.route("/api/tasks", methods=["GET"])
+@required_token
 def tasks():
     query = request.args.to_dict()
 

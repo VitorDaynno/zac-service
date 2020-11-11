@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from dateutil import parser
 
 from src.config.logger import logger
@@ -10,10 +10,15 @@ class DateHelper:
         logger.info("Initialize DateHelper")
 
     @staticmethod
-    def today():
-        return datetime.now()
+    def now():
+        return datetime.utcnow()
 
     @staticmethod
     def to_date(date):
         parsed_date = parser.parse(date)
         return parsed_date
+
+    @staticmethod
+    def add_hour(datetime, hour):
+        parsed_datetime = datetime + timedelta(hours=hour)
+        return parsed_datetime

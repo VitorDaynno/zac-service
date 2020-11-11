@@ -10,7 +10,7 @@ class TrelloCard:
     def save(self, trello_card):
         logger.info("Initializing save a card")
 
-        trello_card["created_date"] = self._date_helper.today()
+        trello_card["created_date"] = self._date_helper.now()
         self._dao.save(trello_card)
 
     def get(self, filters):

@@ -21,3 +21,12 @@ class ModelHelper:
             cards.append(card)
 
         return cards
+
+    @staticmethod
+    def user(user):
+        user_entity = {
+            "id": str(user["_id"]),
+            "email": user["email"]
+        }
+
+        return user_entity

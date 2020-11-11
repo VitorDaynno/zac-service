@@ -3,7 +3,7 @@ from src.config.logger import logger
 
 class TrelloCardDAO:
     def __init__(self, db_helper, date_helper):
-        logger.info("Initializing Trello crawler")
+        logger.info("Initializing TrelloCardDAO")
         self._db = db_helper
         self._date_helper = date_helper
         self._collection = "trello_cards"
