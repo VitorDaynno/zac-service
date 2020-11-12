@@ -18,6 +18,7 @@ class TrelloCrawler:
 
     def integrate_cards(self):
         logger.info("Initializing integration of cards")
+        self._trello_card_controller.delete({})
         boards = self.get_boards()
 
         self.process_boards(boards)

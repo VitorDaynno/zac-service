@@ -1,10 +1,9 @@
 from pymongo import MongoClient
 
-
 from src.config.config import Config
 
 
-class DB:
+class DBHelper:
     def __init__(self):
         self.__config = Config()
         self.__db_server = self.__config.get_db_server()
@@ -24,4 +23,16 @@ class DB:
         collection = self._open(colletion_name)
         result = collection.insert(item)
         self._close()
+        return result
+
+    def get(self, colletion_name, filters):
+        collection = self._open(colletion_name)
+        result = collection.find(filters)
+        items = list(result)
+        self._close()
+        return items
+
+    def delete(self, colletion_name, filters):
+        collection = self._open(colletion_name)
+        result = collection.delete_many(filters)
         return result
