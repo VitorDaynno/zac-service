@@ -1,3 +1,10 @@
+class Unauthorized(Exception):
+    def __init__(self, message):
+        super()
+        self.code = 401
+        self.message = message
+
+
 class Forbiden(Exception):
     def __init__(self, message):
         super()

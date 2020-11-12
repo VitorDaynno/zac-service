@@ -3,7 +3,7 @@ from flask import request, make_response
 from src.api import zac
 from src.config.logger import logger
 from src.factories.factory_controller import FactoryController
-from src.helpers.error_helper import Forbiden, UnprocessableEntity
+from src.helpers.error_helper import Unauthorized, UnprocessableEntity
 
 
 factory = FactoryController()
@@ -25,7 +25,7 @@ def auth():
         token = user.auth(email, password)
 
         return token
-    except (Forbiden, UnprocessableEntity) as error:
+    except (Unauthorized, UnprocessableEntity) as error:
         code = error.code
         message = error.message
         error = {"message": message}

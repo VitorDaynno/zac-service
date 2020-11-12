@@ -6,7 +6,7 @@ from src.services.trello_crawler import TrelloCrawler
 
 @zac.route("/api/trello-crawler/integrate-cards", methods=["POST"])
 @required_token
-def integrate_cards():
+def integrate_cards(user):
     logger.info("Initializing updated cards")
     trello_crawler = TrelloCrawler()
     trello_crawler.integrate_cards()

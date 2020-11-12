@@ -1,5 +1,5 @@
 from src.config.logger import logger
-from src.helpers.error_helper import Forbiden, UnprocessableEntity
+from src.helpers.error_helper import Unauthorized, UnprocessableEntity
 
 
 class User:
@@ -19,7 +19,7 @@ class User:
         users = self._dao.get({"email": email, "password": encrypted_password})
 
         if len(users) == 0:
-            raise Forbiden("Email or password is incorrect")
+            raise Unauthorized("Email or password is incorrect")
 
         user = self._model_helper.user(users[0])
 

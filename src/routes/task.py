@@ -14,7 +14,7 @@ def health():
 
 @zac.route("/api/tasks", methods=["GET"])
 @required_token
-def tasks():
+def tasks(user):
     query = request.args.to_dict()
 
     factory_controller = FactoryController()
