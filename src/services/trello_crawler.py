@@ -80,7 +80,8 @@ class TrelloCrawler:
                 formatted_card = {
                     "name": name,
                     "due": due,
-                    "url": url
+                    "url": url,
+                    "user": user_id
                 }
 
                 formatted_cards.append(formatted_card)

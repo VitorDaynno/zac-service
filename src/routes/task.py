@@ -19,6 +19,6 @@ def tasks(user):
 
     factory_controller = FactoryController()
     task_controller = factory_controller.get_task()
-    tasks = task_controller.get(query)
+    tasks = task_controller.get(user, query)
 
     return tasks

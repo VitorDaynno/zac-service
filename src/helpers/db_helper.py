@@ -25,9 +25,9 @@ class DBHelper:
         self._close()
         return result
 
-    def get(self, colletion_name, filters):
+    def get(self, colletion_name, filters, sort=[["_id", 1]]):
         collection = self._open(colletion_name)
-        result = collection.find(filters)
+        result = collection.find(filters).sort(sort)
         items = list(result)
         self._close()
         return items

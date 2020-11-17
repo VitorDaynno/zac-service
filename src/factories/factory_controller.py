@@ -1,6 +1,7 @@
 from src.controllers.trello_card import TrelloCard
 from src.controllers.task import Task
 from src.controllers.user import User
+from src.controllers.zac_task import ZacTask
 from src.factories.factory_dao import FactoryDAO
 from src.helpers.crypto_helper import CryptoHelper
 from src.helpers.date_helper import DateHelper
@@ -24,7 +25,8 @@ class FactoryController:
 
     def get_task(self):
         trello_card = self.get_trello_card()
-        return Task(trello_card, self._model_helper)
+        zac_task = self.get_zac_task()
+        return Task(trello_card, zac_task, self._model_helper)
 
     def get_user(self):
         dao = self._factory_dao.get_user_dao()
@@ -35,3 +37,8 @@ class FactoryController:
             self._model_helper,
             self._jwt_helper
         )
+
+    def get_zac_task(self):
+        dao = self._factory_dao.get_zac_task_dao()
+        date_helper = self._date_helper
+        return ZacTask(dao, date_helper)
