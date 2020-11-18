@@ -30,5 +30,11 @@ class Task:
         tasks = self._model_helper.zac_tasks(zac_tasks)
 
         tasks.extend(cards)
+        tasks.sort(key=lambda x: x.get("date") or x.get("due"))
 
         return {"tasks": tasks}
+
+    def conclude(self, user, id):
+        logger.info("Initializing conclude task")
+
+        telegram_user = user["telegram_user"]

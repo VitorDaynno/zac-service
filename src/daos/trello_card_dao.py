@@ -34,7 +34,6 @@ class TrelloCardDAO:
 
             search_filter["$and"].append(date_filter)
 
-        print(search_filter)
         r = self._db.get(self._collection, search_filter, sort=[["due", 1]])
         return r
 
