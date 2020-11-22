@@ -10,7 +10,7 @@ jwt_helper = JWTHelper()
 
 def required_token(f):
     @wraps(f)
-    def verify_token():
+    def verify_token(*args, **kwargs):
         headers = request.headers
 
         try:
@@ -25,8 +25,8 @@ def required_token(f):
             token = bearer_token[1]
 
             user = jwt_helper.decode_token(token)
-
-            return f(user)
+            kwargs["user"] = user
+            return f(*args, **kwargs)
         except Forbiden as error:
             code = error.code
             message = error.message

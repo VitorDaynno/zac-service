@@ -16,21 +16,25 @@ class TrelloCardDAO:
     def get(self, filters):
         logger.info("Initializing get cards")
 
-        search_filter = {}
+        search_filter = {"$and": []}
 
-        if "start_date" in filters:
-            search_filter = {
-                "due": {
-                    "$gte": self._date_helper.to_date(filters["start_date"])
-                }
-            }
+        if "user" in filters:
+            search_filter["$and"].append({"user": filters["user"]})
 
-        if "start_date" in filters and "end_date" in filters:
-            search_filter["due"]["$lte"] = self._date_helper.to_date(
-                filters["end_date"]
-            )
+        if "start_date" in filters or "end_date" in filters:
+            date_filter = {"due": {}}
+            if "start_date" in filters:
+                date_filter["due"]["$gte"] = self._date_helper.to_date(
+                    filters["start_date"])
 
-        r = self._db.get(self._collection, search_filter)
+            if "end_date" in filters:
+                date_filter["due"]["$lte"] = self._date_helper.to_date(
+                    filters["end_date"]
+                )
+
+            search_filter["$and"].append(date_filter)
+
+        r = self._db.get(self._collection, search_filter, sort=[["due", 1]])
         return r
 
     def delete(self, filters):
