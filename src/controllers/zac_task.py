@@ -10,3 +10,7 @@ class ZacTask:
         logger.info("Initializing get cards")
         cards = self._dao.get(filters)
         return cards
+
+    def update(self, filters, entity):
+        logger.info("Initializing update cards")
+        self._dao.update(filters, entity)

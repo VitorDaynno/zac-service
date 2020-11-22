@@ -1,6 +1,7 @@
 from src.config.logger import logger
 
 
+
 class ZacTaskDAO:
     def __init__(self, db_helper, date_helper):
         logger.info("Initializing ZacTaskDAO")
@@ -13,8 +14,11 @@ class ZacTaskDAO:
 
         search_filter = {"$and": []}
 
-        if "usuId" in filters:
-            search_filter["$and"].append({"user": filters["user"]})
+        if "id" in filters:
+            search_filter["$and"].append({"_id": self._db.to_object_id(filters["id"])})
+
+        if "user" in filters:
+            search_filter["$and"].append({"usuId": filters["user"]})
 
         if "start_date" in filters or "end_date" in filters:
             date_filter = {"date": {}}
@@ -32,5 +36,33 @@ class ZacTaskDAO:
         if "isConclude" in filters:
             search_filter["$and"].append({"isConclude": filters["isConclude"]})
 
+        if "is_failed" in filters:
+            search_filter["$and"].append({
+                "is_failed": {
+                    "$ne": not filters["is_failed"]
+                }
+            })
+
         r = self._db.get(self._collection, search_filter, sort=[["date", 1]])
+        return r
+
+    def update(self, filters, entity):
+        logger.info("Initializing update tasks")
+
+        update_filter = {"$and": []}
+        update_entity = {"$set": {}}
+
+        if "id" in filters:
+            update_filter["$and"].append({"_id": self._db.to_object_id(filters["id"])})
+
+        if "user" in filters:
+            update_filter["$and"].append({"usuId": filters["user"]})
+
+        if "isConclude" in entity:
+            update_entity["$set"]["isConclude"] = entity["isConclude"]
+
+        if "is_failed" in entity:
+            update_entity["$set"]["is_failed"] = entity["is_failed"]
+
+        r = self._db.update(self._collection, update_filter, update_entity)
         return r
