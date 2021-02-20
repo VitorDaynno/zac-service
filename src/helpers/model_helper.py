@@ -15,7 +15,8 @@ class ModelHelper:
                 "name": trello_card["name"],
                 "due": trello_card["due"],
                 "url": trello_card["url"],
-                "created_date": trello_card["created_date"]
+                "created_date": trello_card["created_date"],
+                "duration": trello_card["duration"] if "duration" in trello_card else 25
             }
 
             cards.append(card)
@@ -42,9 +43,28 @@ class ModelHelper:
             task = {
                 "id": str(zac_task["_id"]),
                 "name": zac_task["name"],
-                "due": zac_task["date"]
+                "due": zac_task["date"],
+                "duration": zac_task["duration"] if "duration" in zac_task else 25,
+                "isConclude": zac_task["isConclude"] if "isConclude" in zac_task else False,
+                "isFailed": zac_task["is_failed"] if "is_failed" in zac_task else False
             }
 
             tasks.append(task)
 
         return tasks
+
+    @staticmethod
+    def zac_routines(zac_routines):
+        routines = []
+
+        for zac_routine in zac_routines:
+            routine = {
+                "id": str(zac_routine["_id"]),
+                "name": zac_routine["name"],
+                "hour": zac_routine["hour"],
+                "duration": zac_routine["duration"] if "duration" in zac_routine else 25
+            }
+
+            routines.append(routine)
+
+        return routines
