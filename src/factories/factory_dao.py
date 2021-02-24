@@ -1,6 +1,7 @@
 from src.daos.trello_card_dao import TrelloCardDAO
 from src.daos.user_dao import UserDAO
 from src.daos.zac_task_dao import ZacTaskDAO
+from src.daos.routine_dao import RoutineDAO
 from src.helpers.db_helper import DBHelper
 from src.helpers.date_helper import DateHelper
 
@@ -19,3 +20,6 @@ class FactoryDAO:
 
     def get_zac_task_dao(self):
         return ZacTaskDAO(self._db, self._date_helper)
+
+    def get_routine_dao(self):
+        return RoutineDAO(self._db, self._date_helper)
