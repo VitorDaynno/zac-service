@@ -1,5 +1,5 @@
 from src.config.logger import logger
-from src.helpers.error_helper import NotFound, Conflict
+from src.helpers.error_helper import NotFound, Conflict, UnprocessableEntity
 
 import json
 
@@ -15,19 +15,14 @@ class Task:
         logger.info("Initializing get tasks")
 
         trello_user = user["trello_user"]
-        telegram_user = user["telegram_user"]
 
         trello_query = query
         trello_query["user"] = trello_user
         trello_cards = self._trello_card_controller.get(trello_query)
 
-        is_conclude = query.is_conclude if "is_conclude" in query else False
-        is_failed = query.is_failed if "is_failed" in query else False
+        print('query', query)
 
         zac_query = query
-        zac_query["user"] = telegram_user
-        zac_query["isConclude"] = is_conclude
-        zac_query["is_failed"] = is_failed
 
         zac_tasks = self._zac_task_controller.get(zac_query)
 
@@ -37,7 +32,7 @@ class Task:
         tasks.extend(cards)
         tasks.sort(key=lambda x: x.get("date") or x.get("due"))
 
-        return {"tasks": tasks}
+        return { "tasks": tasks }
 
     def get_scheduled(self, user, query):
         logger.info("Initializing get scheduled tasks")
@@ -54,8 +49,6 @@ class Task:
 
         zac_query = query
         zac_query["user"] = telegram_user
-        # zac_query["isConclude"] = is_conclude
-        # zac_query["is_failed"] = is_failed
 
         zac_tasks = self._zac_task_controller.get(zac_query)
 
@@ -80,9 +73,7 @@ class Task:
     def conclude(self, user, id):
         logger.info("Initializing conclude task")
 
-        telegram_user = user["telegram_user"]
-
-        filter = { "id": id, "user": telegram_user }
+        filter = { "id": id }
 
         tasks = self._zac_task_controller.get(filter)
 
@@ -91,18 +82,16 @@ class Task:
             raise NotFound("Task not found")
 
         task = tasks[0]
-        if task["isConclude"] or ("is_failed" in task and task["is_failed"]):
+        if task["is_conclude"] or ("is_failed" in task and task["is_failed"]):
             logger.error("Task is already concluded or failed")
             raise Conflict("Task is already concluded or failed")
 
-        self._zac_task_controller.update(filter, {"isConclude": True})
+        self._zac_task_controller.update(filter, {"is_conclude": True})
 
     def fail(self, user, id):
         logger.info("Initializing fail task")
 
-        telegram_user = user["telegram_user"]
-
-        filter = { "id": id, "user": telegram_user }
+        filter = { "id": id }
 
         tasks = self._zac_task_controller.get(filter)
 
@@ -111,8 +100,32 @@ class Task:
             raise NotFound("Task not found")
 
         task = tasks[0]
-        if task["isConclude"] or ("is_failed" in task and task["is_failed"]):
+        if task["is_conclude"] or ("is_failed" in task and task["is_failed"]):
             logger.error("Task is already concluded or failed")
             raise Conflict("Task is already concluded or failed")
 
         self._zac_task_controller.update(filter, {"is_failed": True})
+
+    def create(self, user, body):
+        task = self._zac_task_controller.create(body)
+
+        return self._model_helper.zac_tasks(task)[0]
+
+    def update(self, user, id, body):
+        logger.info("Initializing update task")
+
+        filter = { "id": id }
+
+        tasks = self._zac_task_controller.get(filter)
+
+        if len(tasks) == 0:
+            logger.error("Task not found")
+            raise NotFound("Task not found")
+
+        task = self._zac_task_controller.update(filter, body)
+
+        return self._model_helper.zac_tasks(task)[0]
+
+    def verify_task(self, task):
+        if not task.name:
+            raise UnprocessableEntity("Name is required")

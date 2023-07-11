@@ -24,7 +24,14 @@ class User:
         user = self._model_helper.user(users[0])
 
         token = self._jwt_helper.encode_token(user)
-        return {"token": token}
+
+        user["token"] = token
+
+        return {
+            "id": user["id"],
+            "email": user["email"],
+            "token": token
+        }
 
     def get(self, filters):
         logger.info("Initializing get users")

@@ -1,6 +1,6 @@
 from src.helpers.jwt_helper import JWTHelper
 from src.helpers.error_helper import Forbiden
-from flask import request, make_response
+from flask import request, make_response, abort
 from functools import wraps
 from jwt import DecodeError, ExpiredSignatureError
 
@@ -32,12 +32,14 @@ def required_token(f):
             message = error.message
             error = {"message": message}
             response = make_response(error, code)
-            return response
-        except (DecodeError, ExpiredSignatureError):
+            response.content_type = "application/json"
+            abort(response)
+        except (DecodeError, ExpiredSignatureError) as error:
             code = 403
             message = "Invalid token"
             error = {"message": message}
             response = make_response(error, code)
-            return response
+            response.content_type = "application/json"
+            abort(403)
 
     return verify_token
