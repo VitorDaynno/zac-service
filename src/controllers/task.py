@@ -20,9 +20,8 @@ class Task:
         trello_query["user"] = trello_user
         trello_cards = self._trello_card_controller.get(trello_query)
 
-        print('query', query)
-
         zac_query = query
+        zac_query["user"] = user["id"]
 
         zac_tasks = self._zac_task_controller.get(zac_query)
 
@@ -73,7 +72,7 @@ class Task:
     def conclude(self, user, id):
         logger.info("Initializing conclude task")
 
-        filter = { "id": id }
+        filter = { "id": id, "user": user["id"] }
 
         tasks = self._zac_task_controller.get(filter)
 
@@ -91,7 +90,7 @@ class Task:
     def fail(self, user, id):
         logger.info("Initializing fail task")
 
-        filter = { "id": id }
+        filter = { "id": id, "user": user["id"] }
 
         tasks = self._zac_task_controller.get(filter)
 
@@ -107,14 +106,14 @@ class Task:
         self._zac_task_controller.update(filter, {"is_failed": True})
 
     def create(self, user, body):
-        task = self._zac_task_controller.create(body)
+        task = self._zac_task_controller.create(user, body)
 
         return self._model_helper.zac_tasks(task)[0]
 
     def update(self, user, id, body):
         logger.info("Initializing update task")
 
-        filter = { "id": id }
+        filter = { "id": id, "user": user["id"] }
 
         tasks = self._zac_task_controller.get(filter)
 

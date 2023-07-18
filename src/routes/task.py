@@ -19,9 +19,6 @@ def tasks(*args, **kwargs):
     user = kwargs.get("user")
     query = request.args.to_dict()
 
-    print('user', user)
-    print("qury", query)
-
     factory_controller = FactoryController()
     task_controller = factory_controller.get_task()
     tasks = task_controller.get(user, query)

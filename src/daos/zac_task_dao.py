@@ -18,7 +18,7 @@ class ZacTaskDAO:
             search_filter["$and"].append({"_id": self._db.to_object_id(filters["id"])})
 
         if "user" in filters:
-            search_filter["$and"].append({"usuId": filters["user"]})
+            search_filter["$and"].append({"user_id": filters["user"]})
 
         if "start_date" in filters or "end_date" in filters:
             date_filter = {"date": {}}
@@ -55,10 +55,10 @@ class ZacTaskDAO:
         if "id" in filters:
             update_filter["$and"].append(
                 {"_id": self._db.to_object_id(filters["id"])}
-            )
+                )
 
         if "user" in filters:
-            update_filter["$and"].append({"usuId": filters["user"]})
+            update_filter["$and"].append({"user_id": filters["user"]})
 
         if "name" in entity:
             update_entity["$set"]["name"] = entity["name"]

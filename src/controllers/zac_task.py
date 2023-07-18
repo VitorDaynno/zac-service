@@ -36,7 +36,7 @@ class ZacTask:
 
         return self.get_by_id(filters["id"])
 
-    def create(self, entity):
+    def create(self, user, entity):
         logger.info("Initializing create task")
 
         self.verify_task(entity)
@@ -49,6 +49,7 @@ class ZacTask:
             "note": entity["note"],
             "is_conclude": False,
             "is_failed": False,
+            "user_id": user["id"],
         }
 
         created_task_id = self._dao.insert(task)
