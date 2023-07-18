@@ -43,9 +43,12 @@ class ModelHelper:
             task = {
                 "id": str(zac_task["_id"]),
                 "name": zac_task["name"],
-                "due": zac_task["date"],
+                "startTime": zac_task["start_time"],
+                "date": zac_task["date"],
+                "endTime": zac_task["end_time"],
                 "duration": zac_task["duration"] if "duration" in zac_task else 25,
-                "isConclude": zac_task["isConclude"] if "isConclude" in zac_task else False,
+                "note": zac_task["note"] if "note" in zac_task else None,
+                "isConclude": zac_task["is_conclude"] if "is_conclude" in zac_task else False,
                 "isFailed": zac_task["is_failed"] if "is_failed" in zac_task else False
             }
 

@@ -22,5 +22,5 @@ class JWTHelper:
         return encode_token.decode("utf-8")
 
     def decode_token(self, token):
-        decoded = jwt.decode(token, self._secret, algorithm=self._algorithm)
+        decoded = jwt.decode(token, self._secret, algorithms=[self._algorithm])
         return decoded
