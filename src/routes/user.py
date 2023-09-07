@@ -9,7 +9,7 @@ from src.helpers.error_helper import Unauthorized, UnprocessableEntity
 factory = FactoryController()
 
 
-@zac.route("/api/users/auth", methods=["POST"])
+@zac.route("/users/auth", methods=["POST"])
 def auth():
     try:
         body = request.json or {}

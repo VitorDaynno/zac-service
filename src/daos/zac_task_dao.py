@@ -18,7 +18,7 @@ class ZacTaskDAO:
             search_filter["$and"].append({"_id": self._db.to_object_id(filters["id"])})
 
         if "user" in filters:
-            search_filter["$and"].append({"usuId": filters["user"]})
+            search_filter["$and"].append({"user_id": filters["user"]})
 
         if "start_date" in filters or "end_date" in filters:
             date_filter = {"date": {}}
@@ -33,8 +33,8 @@ class ZacTaskDAO:
 
             search_filter["$and"].append(date_filter)
 
-        if "isConclude" in filters:
-            search_filter["$and"].append({"isConclude": filters["isConclude"]})
+        if "is_conclude" in filters:
+            search_filter["$and"].append({"is_conclude": filters["is_conclude"]})
 
         if "is_failed" in filters:
             search_filter["$and"].append({
@@ -53,16 +53,40 @@ class ZacTaskDAO:
         update_entity = {"$set": {}}
 
         if "id" in filters:
-            update_filter["$and"].append({"_id": self._db.to_object_id(filters["id"])})
+            update_filter["$and"].append(
+                {"_id": self._db.to_object_id(filters["id"])}
+                )
 
         if "user" in filters:
-            update_filter["$and"].append({"usuId": filters["user"]})
+            update_filter["$and"].append({"user_id": filters["user"]})
 
-        if "isConclude" in entity:
-            update_entity["$set"]["isConclude"] = entity["isConclude"]
+        if "name" in entity:
+            update_entity["$set"]["name"] = entity["name"]
+
+        if "date" in entity:
+            update_entity["$set"]["date"] = entity["date"]
+
+        if "startTime" in entity:
+            update_entity["$set"]["start_time"] = entity["startTime"]
+
+        if "endTime" in entity:
+            update_entity["$set"]["end_time"] = entity["endTime"]
+
+        if "note" in entity:
+            update_entity["$set"]["note"] = entity["note"]
+
+        if "is_conclude" in entity:
+            update_entity["$set"]["is_conclude"] = entity["is_conclude"]
 
         if "is_failed" in entity:
             update_entity["$set"]["is_failed"] = entity["is_failed"]
 
         r = self._db.update(self._collection, update_filter, update_entity)
+        return r
+
+    def insert(self, task):
+        logger.info("Initializing create task")
+
+        r = self._db.insert(self._collection, task)
+
         return r
