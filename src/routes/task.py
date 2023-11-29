@@ -136,3 +136,30 @@ def fail(*args, **kwargs):
         error = {"error": str(error)}
         response = make_response(error, 500)
         return response
+
+@zac.route("/tasks/<id>", methods=["DELETE"])
+@required_token
+def delete(*args, **kwargs):
+    try:
+        id = kwargs.get("id")
+        user = kwargs.get("user")
+
+        factory_controller = FactoryController()
+        task_controller = factory_controller.get_task()
+        task_controller.delete(user, id)
+
+        return {"message": "Done"}
+    except (NotFound, Conflict) as error:
+        code = error.code
+        message = error.message
+        error = {"message": message}
+        response = make_response(error, code)
+        return response
+    except InvalidId as error:
+        error = {"message": "Invalid id"}
+        response = make_response(error, 422)
+        return response
+    except Exception as error:
+        error = {"error": str(error)}
+        response = make_response(error, 500)
+        return response
