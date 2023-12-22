@@ -23,12 +23,19 @@ class DBHelper:
 
     def insert(self, colletion_name, item):
         collection = self._open(colletion_name)
+
+        item["is_enabled"] = True
+        item["created_at"] = self._date_helper.now()
+
         result = collection.insert(item)
         self._close()
         return result
 
     def get(self, colletion_name, filters, sort=[["_id", 1]]):
         collection = self._open(colletion_name)
+
+        filters["is_enabled"] = True
+
         result = collection.find(filters).sort(sort)
         items = list(result)
         self._close()
