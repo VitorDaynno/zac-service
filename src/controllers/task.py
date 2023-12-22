@@ -128,3 +128,16 @@ class Task:
     def verify_task(self, task):
         if not task.name:
             raise UnprocessableEntity("Name is required")
+
+    def delete(self, user, id):
+        logger.info("Initializing delete task")
+
+        filter = { "id": id, "user": user["id"] }
+
+        tasks = self._zac_task_controller.get(filter)
+
+        if len(tasks) == 0:
+            logger.error("Task not found")
+            raise NotFound("Task not found")
+
+        self._zac_task_controller.update(filter, {"is_enabled": False})

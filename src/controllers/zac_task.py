@@ -32,6 +32,9 @@ class ZacTask:
         if "endTime" in entity:
             entity["endTime"] = self._date_helper.to_date(entity["endTime"])
 
+        if "is_enabled" in entity:
+            entity["is_enabled"] = entity["is_enabled"]
+
         self._dao.update(filters, entity)
 
         return self.get_by_id(filters["id"])

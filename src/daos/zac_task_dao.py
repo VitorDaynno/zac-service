@@ -81,6 +81,9 @@ class ZacTaskDAO:
         if "is_failed" in entity:
             update_entity["$set"]["is_failed"] = entity["is_failed"]
 
+        if "is_enabled" in entity:
+            update_entity["$set"]["is_enabled"] = entity["is_enabled"]
+
         r = self._db.update(self._collection, update_filter, update_entity)
         return r
 
