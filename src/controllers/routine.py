@@ -23,8 +23,18 @@ class Routine:
             routine = {
                 "name": entity["name"],
                 "days": entity["days"],
-                "start_time": entity["startTime"],
-                "end_time": entity["endTime"],
+                "start_time": self._date_helper.to_str_date(
+                    self._date_helper.to_date(
+                        entity["startTime"]
+                    ),
+                    "%H:%M"
+                ),
+                "end_time": self._date_helper.to_str_date(
+                    self._date_helper.to_date(
+                        entity["endTime"]
+                    ),
+                    "%H:%M"
+                ),
                 "user_id": user["id"],
                 "is_active": True,
                 "is_enabled": True
