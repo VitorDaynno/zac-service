@@ -4,12 +4,20 @@ from src.helpers.error_helper import NotFound, Conflict, UnprocessableEntity
 import json
 
 class Task:
-    def __init__(self, trello_card_controller, zac_task_controller, routine_controller, model_helper):
+    def __init__(
+            self,
+            trello_card_controller,
+            zac_task_controller,
+            routine_controller,
+            model_helper,
+            date_helper
+        ):
         logger.info("Initializing Tasks")
         self._trello_card_controller = trello_card_controller
         self._zac_task_controller = zac_task_controller
         self._routine_controller = routine_controller
         self._model_helper = model_helper
+        self._date_helper = date_helper
 
     def get(self, user, query):
         logger.info("Initializing get tasks")
@@ -141,3 +149,33 @@ class Task:
             raise NotFound("Task not found")
 
         self._zac_task_controller.update(filter, {"is_enabled": False})
+
+    def create_tasks_by_routine(self):
+        logger.info("Starting creating tasks by routines")
+
+        routines = self._routine_controller.get_pending_routines()
+
+        today = self._date_helper.initial_date()
+        day_of_week = today.weekday()
+        now = self._date_helper.now()
+
+        for routine in routines:
+            try:
+                now = self._date_helper.now()
+
+                if day_of_week in routine["days"]:
+                    routine_id = routine["_id"]
+                    task = {
+                        "name": routine["name"],
+                        "date": self._date_helper.to_str_date(today),
+                        "startTime": routine["start_time"],
+                        "endTime": routine["end_time"],
+                        "user_id": routine["user_id"],
+                        "note": ""
+                    }
+
+                    self.create({ "id": routine["user_id"]}, task)
+
+                    self._routine_controller.update_last_created_date(routine_id, now)
+            except Exception as error:
+                logger.info("An error occurred: {0}".format(error))

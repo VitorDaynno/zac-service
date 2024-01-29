@@ -66,11 +66,11 @@ class ZacTaskDAO:
         if "date" in entity:
             update_entity["$set"]["date"] = entity["date"]
 
-        if "startTime" in entity:
-            update_entity["$set"]["start_time"] = entity["startTime"]
+        if "start_time" in entity:
+            update_entity["$set"]["start_time"] = entity["start_time"]
 
-        if "endTime" in entity:
-            update_entity["$set"]["end_time"] = entity["endTime"]
+        if "end_time" in entity:
+            update_entity["$set"]["end_time"] = entity["end_time"]
 
         if "note" in entity:
             update_entity["$set"]["note"] = entity["note"]

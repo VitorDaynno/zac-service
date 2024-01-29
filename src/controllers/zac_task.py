@@ -27,10 +27,10 @@ class ZacTask:
             entity["date"] = self._date_helper.to_date(entity["date"])
 
         if "startTime" in entity:
-            entity["startTime"] = self._date_helper.to_date(entity["startTime"])
+            entity["start_time"] = self._date_helper.to_date(entity["startTime"])
 
         if "endTime" in entity:
-            entity["endTime"] = self._date_helper.to_date(entity["endTime"])
+            entity["end_time"] = self._date_helper.to_date(entity["endTime"])
 
         if "is_enabled" in entity:
             entity["is_enabled"] = entity["is_enabled"]

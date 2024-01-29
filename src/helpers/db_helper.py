@@ -48,6 +48,18 @@ class DBHelper:
         self._close()
         return result
 
+    def update_one(self, colletion_name, id, entity):
+        collection = self._open(colletion_name)
+
+        entity["$set"]["updated_date"] = self._date_helper.now()
+
+        result = collection.update_one(
+            {"_id": self.to_object_id(id)},
+            entity
+        )
+        self._close()
+        return result
+
     def delete(self, colletion_name, filters):
         collection = self._open(colletion_name)
         result = collection.delete_many(filters)

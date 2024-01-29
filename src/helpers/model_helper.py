@@ -64,9 +64,9 @@ class ModelHelper:
             routine = {
                 "id": str(zac_routine["_id"]),
                 "name": zac_routine["name"],
-                "hour": zac_routine["hour"],
-                "duration": zac_routine["duration"] if "duration" in zac_routine else 25,
-                "lastCreatedDate": zac_routine["lastCreatedDate"]
+                "startTime": zac_routine["start_time"],
+                "endTime": zac_routine["end_time"],
+                "duration": zac_routine["duration"] if "duration" in zac_routine else 25
             }
 
             routines.append(routine)

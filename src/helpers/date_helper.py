@@ -22,3 +22,12 @@ class DateHelper:
     def add_hour(datetime, hour):
         parsed_datetime = datetime + timedelta(hours=hour)
         return parsed_datetime
+
+    def initial_date(self):
+        now = self.now()
+        initial_date = datetime(now.year, now.month, now.day, 0, 0, 0)
+        return initial_date
+
+    @staticmethod
+    def to_str_date(datetime, mask="%d/%m/%Y"):
+        return datetime.strftime(mask)
