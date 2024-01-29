@@ -28,7 +28,14 @@ class FactoryController:
         trello_card = self.get_trello_card()
         zac_task = self.get_zac_task()
         routine = self.get_routine()
-        return Task(trello_card, zac_task, routine, self._model_helper)
+
+        return Task(
+            trello_card,
+            zac_task,
+            routine,
+            self._model_helper,
+            self._date_helper
+        )
 
     def get_user(self):
         dao = self._factory_dao.get_user_dao()
@@ -48,4 +55,6 @@ class FactoryController:
     def get_routine(self):
         dao = self._factory_dao.get_routine_dao()
         date_helper = self._date_helper
-        return Routine(dao, date_helper)
+        model_helper = self._model_helper
+
+        return Routine(dao, date_helper, model_helper)
