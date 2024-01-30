@@ -156,7 +156,7 @@ class Task:
         routines = self._routine_controller.get_pending_routines()
 
         today = self._date_helper.initial_date()
-        day_of_week = today.weekday()
+        day_of_week = self._date_helper.get_week_day(today)
         now = self._date_helper.now()
 
         for routine in routines:

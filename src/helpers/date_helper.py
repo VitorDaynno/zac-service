@@ -31,3 +31,10 @@ class DateHelper:
     @staticmethod
     def to_str_date(datetime, mask="%d/%m/%Y"):
         return datetime.strftime(mask)
+
+    @staticmethod
+    def get_week_day(self, date):
+        week_day = date.weekday()
+        if week_day == 6:
+            return 0
+        return week_day + 1
