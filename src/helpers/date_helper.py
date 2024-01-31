@@ -33,7 +33,7 @@ class DateHelper:
         return datetime.strftime(mask)
 
     @staticmethod
-    def get_week_day(self, date):
+    def get_week_day(date):
         week_day = date.weekday()
         if week_day == 6:
             return 0
