@@ -167,7 +167,10 @@ class Task:
                     routine_id = routine["_id"]
                     task = {
                         "name": routine["name"],
-                        "date": self._date_helper.to_str_date(today),
+                        "date": self._date_helper.to_str_date(
+                            today,
+                            "%Y-%m-%d %H:%M:%S"
+                        ),
                         "startTime": routine["start_time"],
                         "endTime": routine["end_time"],
                         "user_id": routine["user_id"],
