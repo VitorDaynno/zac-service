@@ -47,7 +47,7 @@ class ZacTask:
         task = {
             "name": entity["name"],
             "date": self._date_helper.to_date(entity["date"]),
-            "start_time":  self._date_helper.to_date(entity["startTime"]),
+            "start_time": self._date_helper.to_date(entity["startTime"]),
             "end_time": self._date_helper.to_date(entity["endTime"]),
             "note": entity["note"],
             "is_conclude": False,
