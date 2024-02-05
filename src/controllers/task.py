@@ -155,9 +155,11 @@ class Task:
 
         routines = self._routine_controller.get_pending_routines()
 
-        today = self._date_helper.initial_date()
+        today = self._date_helper.initial_date(3)
         day_of_week = self._date_helper.get_week_day(today)
         now = self._date_helper.now()
+
+        parsed_date = self._date_helper.to_str_date(today, "%Y-%m-%d %H:%M:%S")
 
         for routine in routines:
             try:
@@ -167,12 +169,9 @@ class Task:
                     routine_id = routine["_id"]
                     task = {
                         "name": routine["name"],
-                        "date": self._date_helper.to_str_date(
-                            today,
-                            "%Y-%m-%d %H:%M:%S"
-                        ),
-                        "startTime": routine["start_time"],
-                        "endTime": routine["end_time"],
+                        "date": parsed_date,
+                        "startTime": parsed_date[0:11] + routine["start_time"],
+                        "endTime": parsed_date[0:11] + routine["end_time"],
                         "user_id": routine["user_id"],
                         "note": ""
                     }
