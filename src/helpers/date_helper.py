@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from dateutil import parser
+from dateutil import parser, tz
 
 from src.config.logger import logger
 
@@ -23,9 +23,10 @@ class DateHelper:
         parsed_datetime = datetime + timedelta(hours=hour)
         return parsed_datetime
 
-    def initial_date(self):
+    def initial_date(self, additional_hour=0):
         now = self.now()
-        initial_date = datetime(now.year, now.month, now.day, 0, 0, 0)
+        initial_date = datetime(now.year, now.month, now.day, additional_hour, 0, 0)
+
         return initial_date
 
     @staticmethod
