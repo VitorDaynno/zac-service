@@ -9,6 +9,7 @@ class Task:
             trello_card_controller,
             zac_task_controller,
             routine_controller,
+            user_controller,
             model_helper,
             date_helper
         ):
@@ -16,6 +17,7 @@ class Task:
         self._trello_card_controller = trello_card_controller
         self._zac_task_controller = zac_task_controller
         self._routine_controller = routine_controller
+        self._user_controller = user_controller
         self._model_helper = model_helper
         self._date_helper = date_helper
 
@@ -155,15 +157,14 @@ class Task:
 
         routines = self._routine_controller.get_pending_routines()
 
-        today = self._date_helper.initial_date(3)
-        day_of_week = self._date_helper.get_week_day(today)
-        now = self._date_helper.now()
-
-        parsed_date = self._date_helper.to_str_date(today, "%Y-%m-%d %H:%M:%S")
-
         for routine in routines:
             try:
+                user = self._user_controller.get_by_id(routine["user_id"])
+
                 now = self._date_helper.now()
+                day_of_week = self._date_helper.get_week_day(now, user["timezone"])
+
+                parsed_date = self._date_helper.to_str_date(now, "%Y-%m-%d %H:%M:%S")
 
                 if day_of_week in routine["days"]:
                     routine_id = routine["_id"]

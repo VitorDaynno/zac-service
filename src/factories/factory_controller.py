@@ -28,11 +28,13 @@ class FactoryController:
         trello_card = self.get_trello_card()
         zac_task = self.get_zac_task()
         routine = self.get_routine()
+        user = self.get_user()
 
         return Task(
             trello_card,
             zac_task,
             routine,
+            user,
             self._model_helper,
             self._date_helper
         )

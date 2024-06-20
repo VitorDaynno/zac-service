@@ -10,5 +10,9 @@ class UserDAO:
     def get(self, filters):
         logger.info("Initializing get users")
 
+        if "id" in filters:
+            id = filters.pop("id")
+            filters["_id"] = self._db.to_object_id(id)
+
         users = self._db.get(self._collection, filters)
         return users
