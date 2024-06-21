@@ -24,14 +24,16 @@ class Routine:
                 "name": entity["name"],
                 "days": entity["days"],
                 "start_time": self._date_helper.to_str_date(
-                    self._date_helper.to_date(
-                        entity["startTime"]
+                    self._date_helper.to_local_date(
+                        entity["startTime"],
+                        user["timezone"]
                     ),
                     "%H:%M"
                 ),
                 "end_time": self._date_helper.to_str_date(
-                    self._date_helper.to_date(
-                        entity["endTime"]
+                    self._date_helper.to_local_date(
+                        entity["endTime"],
+                        user["timezone"]
                     ),
                     "%H:%M"
                 ),
@@ -65,7 +67,7 @@ class Routine:
     def get_pending_routines(self):
         logger.info("Starting get pending routines")
 
-        today = self._date_helper.initial_date()
+        today = self._date_helper.initial_date(0)
 
         search_filter = {
             "$or": [
