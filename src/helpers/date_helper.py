@@ -1,5 +1,5 @@
-from datetime import datetime, timedelta
-from dateutil import parser, tz
+from datetime import datetime, timedelta, timezone
+from dateutil import parser
 
 from src.config.logger import logger
 
@@ -15,7 +15,14 @@ class DateHelper:
 
     @staticmethod
     def to_date(date):
-        parsed_date = parser.parse(date)
+        parsed_date = parser.parse(date).astimezone(timezone.utc)
+        return parsed_date
+
+    @staticmethod
+    def to_local_date(date, interval):
+        local_timedelta = timedelta(hours=interval)
+        local_timezone = timezone(local_timedelta)
+        parsed_date = parser.parse(date).replace(tzinfo=timezone.utc).astimezone(local_timezone)
         return parsed_date
 
     @staticmethod
@@ -23,9 +30,15 @@ class DateHelper:
         parsed_datetime = datetime + timedelta(hours=hour)
         return parsed_datetime
 
-    def initial_date(self, additional_hour=0):
+    def initial_date(self, time_variation):
         now = self.now()
-        initial_date = datetime(now.year, now.month, now.day, additional_hour, 0, 0)
+
+        local_timedelta = timedelta(hours=time_variation)
+        local_timezone = timezone(local_timedelta)
+
+        initial_date = datetime(
+            now.year, now.month, now.day, 0, 0, 0
+        ).replace(tzinfo=timezone.utc).astimezone(local_timezone)
 
         return initial_date
 
@@ -34,8 +47,11 @@ class DateHelper:
         return datetime.strftime(mask)
 
     @staticmethod
-    def get_week_day(date):
-        week_day = date.weekday()
+    def get_week_day(date, time_variation):
+        local_timedelta = timedelta(hours=time_variation)
+        local_timezone = timezone(local_timedelta)
+
+        week_day = date.replace(tzinfo=timezone.utc).astimezone(local_timezone).weekday()
         if week_day == 6:
             return 0
         return week_day + 1

@@ -29,8 +29,7 @@ class ModelHelper:
             "id": str(user["_id"]),
             "email": user["email"],
             "trello_user": user["trello_user"] if "trello_user" in user else "",
-            "telegram_user": user["telegram_user"]
-            if "telegram_user" in user else ""
+            "timezone": user["timezone"]
         }
 
         return user_entity

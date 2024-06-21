@@ -1,5 +1,5 @@
 from src.config.logger import logger
-from src.helpers.error_helper import Unauthorized, UnprocessableEntity
+from src.helpers.error_helper import Unauthorized, NotFound
 
 
 class User:
@@ -37,3 +37,12 @@ class User:
         logger.info("Initializing get users")
         cards = self._dao.get(filters)
         return cards
+
+    def get_by_id(self, id):
+        logger.info("Initializing get by id")
+        users = self._dao.get({ "id": id })
+
+        if not len(users):
+            raise NotFound('User not found')
+
+        return users[0]
