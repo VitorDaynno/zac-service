@@ -72,8 +72,17 @@ class Routine:
         search_filter = {
             "$or": [
                 {
-                    "last_created_date": {
-                        "$lt": today
+                    "$expr": {
+                        "$gte": [
+                            {
+                                "$dateDiff": {
+                                    "startDate": "$last_created_date",
+                                    "endDate": today,
+                                    "unit": "day"
+                                }
+                            },
+                            1
+                        ]
                     }
                 },
                 {

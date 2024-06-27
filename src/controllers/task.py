@@ -164,15 +164,16 @@ class Task:
                 now = self._date_helper.now()
                 day_of_week = self._date_helper.get_week_day(now, user["timezone"])
 
-                parsed_date = self._date_helper.to_str_date(now, "%Y-%m-%d %H:%M:%S")
+                local_date = self._date_helper.to_local_date(str(now), user["timezone"])
+                parsed_date = self._date_helper.to_str_date(now, "%Y-%m-%d")
 
                 if day_of_week in routine["days"]:
                     routine_id = routine["_id"]
                     task = {
                         "name": routine["name"],
-                        "date": parsed_date,
-                        "startTime": parsed_date[0:11] + routine["start_time"],
-                        "endTime": parsed_date[0:11] + routine["end_time"],
+                        "date": str(local_date),
+                        "startTime": parsed_date + " " + routine["start_time"],
+                        "endTime": parsed_date + " " + routine["end_time"],
                         "user_id": routine["user_id"],
                         "note": ""
                     }
