@@ -67,7 +67,7 @@ class Routine:
     def get_pending_routines(self):
         logger.info("Starting get pending routines")
 
-        today = self._date_helper.initial_date(0)
+        now = self._date_helper.now()
 
         search_filter = {
             "$or": [
@@ -77,13 +77,13 @@ class Routine:
                             {
                                 "$dateDiff": {
                                     "startDate": "$last_created_date",
-                                    "endDate": today,
-                                    "unit": "day"
+                                    "endDate": now,
+                                    "unit": "minute"
                                 }
                             },
-                            1
+                            1440
                         ]
-                    }
+                    },
                 },
                 {
                     "last_created_date": {
