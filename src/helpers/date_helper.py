@@ -55,3 +55,12 @@ class DateHelper:
         if week_day == 6:
             return 0
         return week_day + 1
+
+    @staticmethod
+    def timezone_to_hour(timezone):
+        signal = "-" if timezone < 0 else ""
+
+        if abs(timezone) < 10:
+            return "{0}0{1}:00".format(signal, abs(timezone))
+
+        return "{0}{1}:00".format(signal, str(abs(timezone)))
